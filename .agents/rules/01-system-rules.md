@@ -17,12 +17,12 @@ trigger: always_on
 # Architecture & Tech Stack
 1. Infra & Container Orchestration Layer
 	- Docker & Docker Compose (컨테이너 기반 로컬 멀티 프로세스 격리 및 오케스트레이션)
-		├─ 백엔드, 워커, 프론트엔드, 인메모리 DB, 리버스 프록시(Nginx)를 각각 별도 컨테이너로 분리
-		└─ 볼륨 바인딩(Volume Binding)을 통한 소스 코드 실시간 동기화 (Vite HMR & FastAPI Reload 유지)
+		- 백엔드, 워커, 프론트엔드, 인메모리 DB, 리버스 프록시(Nginx)를 각각 별도 컨테이너로 분리
+		- 볼륨 바인딩(Volume Binding)을 통한 소스 코드 실시간 동기화 (Vite HMR & FastAPI Reload 유지)
 	- Nginx (Reverse Proxy & Web Server)
-		├─ 역할: 호스트(Windows) 포트 80(또는 지정 포트)을 독점하는 단일 엔드포인트 구축
-		├─ 라우팅 메커니즘: 정적 에셋 및 프론트엔드 라우팅(/)은 React 컨테이너로 프록시, API 요청(/api/*)은 FastAPI 컨테이너로 업스트림(Upstream) 라우팅
-		└─ 이점: 로컬 개발 환경 내 CORS 미들웨어 의존성 제거, HTTP 헤더 제어 최적화
+		- 역할: 호스트(Windows) 포트 80(또는 지정 포트)을 독점하는 단일 엔드포인트 구축
+		- 라우팅 메커니즘: 정적 에셋 및 프론트엔드 라우팅(/)은 React 컨테이너로 프록시, API 요청(/api/*)은 FastAPI 컨테이너로 업스트림(Upstream) 라우팅
+		- 이점: 로컬 개발 환경 내 CORS 미들웨어 의존성 제거, HTTP 헤더 제어 최적화
 2. Application Layer
 	- Frontend: React (Vite) + TypeScript (SPA) + TailwindCSS
 	- Backend: FastAPI + uv (Package Manager, Dockerfile 내 멀티스테이지 빌드 캐싱 최적화)
@@ -32,11 +32,11 @@ trigger: always_on
 	- Crawling: HTTPX + BeautifulSoup4 (정적 링크 고속 탐색)
 	- Scraping Core: Crawl4AI (LLM용 마크다운 변환 및 정제)
 	- Browser Automation Engine: Playwright (Async Python)
-		├─ 런타임 환경: Playwright 공식 파이썬 도커 베이스 이미지(mcr.microsoft.com/playwright/python) 활용
-		└─ 역할: 복잡한 인증(Session 로그인), 캡차(CAPTCHA) 우회 훅, 네트워크 데이터 인터셉트
+		- 런타임 환경: Playwright 공식 파이썬 도커 베이스 이미지(mcr.microsoft.com/playwright/python) 활용
+		- 역할: 복잡한 인증(Session 로그인), 캡차(CAPTCHA) 우회 훅, 네트워크 데이터 인터셉트
 5. Quality Assurance & DevOps Layer
 	- E2E Testing / UI Automation: Playwright (TypeScript/Node.js)
-		└─ 역할: 프론트엔드-백엔드 통합 테스트 자동화, 바이브 코딩 코드 무결성 검증
+		- 역할: 프론트엔드-백엔드 통합 테스트 자동화, 바이브 코딩 코드 무결성 검증
 
 
 # Extreme Privacy Directives
