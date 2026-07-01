@@ -29,7 +29,6 @@ trigger: always_on
 3. Task & Event Infrastructure
 	- Task Queue: Taskiq + Redis (공식 Redis Docker Image 활용)
 4. Data Acquisition Engine
-	- Crawling: HTTPX + BeautifulSoup4 (정적 링크 고속 탐색)
 	- Scraping Core: Crawl4AI (LLM용 마크다운 변환 및 정제)
 	- Browser Automation Engine: Playwright (Async Python)
 		- 런타임 환경: Playwright 공식 파이썬 도커 베이스 이미지(mcr.microsoft.com/playwright/python) 활용
