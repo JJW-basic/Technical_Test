@@ -44,12 +44,27 @@ trigger: always_on
 	- 이름, 나이, 전화번호, 이메일 등 식별 가능한 개인정보(PII)의 수집, 요청, 데이터 모델링 절대 금지
 
 
+# Legal Compliance & Anti-Scraping Liability Guard
+1. Pre-Execution Compliance Validation (사전 검증 의무화)
+	- 임의의 대상 도메인(Domain)에서 데이터를 수집하기 전, 데이터 획득 엔진은 반드시 최우선적으로 아래 4대 메타데이터 파일의 존재 여부 및 콘텐츠를 비동기식으로 조회·파싱해야 한다.
+		- `robots.txt` (로봇 배제 표준 규칙 검증)
+		- `humans.txt` (운영자 식별 및 추가 수집 제약 조건 확인)
+		- `security.txt` (보안 정책 및 크롤러 접근 차단 IP 범위 확인)
+		- `sitemap.xml` (구조화된 URL 접근 허용 도메인 경로 추적)
+2. Enforcement of Automation Bans (자동화 데이터 수집 금지 조항 강제)
+	- 상기 4대 파일 분석 결과, 전면적인 자동화 데이터 수집 금지(예: `User-agent: * \n Disallow: /`) 조항이 탐지될 경우, 시스템은 즉시 크롤링/스크래핑 태스크(Task)를 중단(Abort)해야 한다.
+	- 작업 중단 즉시 상위 파이프라인으로 예외를 전파하고, 클라이언트(프론트엔드) 스크린에 "해당 URL은 사이트 정책에 의해 자동화된 데이터 수집이 금지되어 있습니다."라는 명확한 법적 고지 문구를 렌더링해야 한다.
+3. Partial Restrictive Path Routing (부분 금지 경로 우회 및 매핑)
+	- 특정 경로에 대해서만 수집이 금지되고 일부 경로가 허용된 경우(Partial Disallow), 정규식 매칭을 통해 명시적으로 허용된 경로(Allowed Path) 및 패턴 내부에서만 정보 수집을 수행하도록 필터링 로직을 구현한다. 금지 경로 접근 시도는 사전에 차단한다.
+
+
 # System Integration & Workflow
 1. Routing (Nginx)
 	- Nginx를 단일 진입점으로 설정 (정적 자산 -> React, `/api/*` -> FastAPI 라우팅)
 2. Error Handling Strategy
 	- FastAPI: HTTP 4xx, 5xx, Validation 에러에 대한 전역 예외 처리기(Global Exception Handler) 구현 및 구조화된 JSON 반환
 	- Redis: 연결 실패 대비 Fallback/Circuit Breaker 패턴 적용 (침묵 실패 방지 및 HTTP 503 명확히 반환)
+	- Compliance Exception: 사이트 규약에 따른 수집 차단 시, 시스템은 `HTTP 403 Forbidden` 또는 구조화된 비즈니스 로직 에러(예: `422 Unprocessable Entity` 내 커스텀 에러 코드)를 반환하여 프론트엔드가 이를 제어할 수 있도록 한다.
 
 
 # System Directives & Reasoning Principles
@@ -68,7 +83,7 @@ trigger: always_on
 # Task Orchestration
 1. Task Decomposition & Mapping
 	- 요청사항 분석 후 Architecture 영역(React, FastAPI, Nginx, Redis 등)별 최소 작업 단위로 분해
-	- 분해된 단위가 'Zero PII' 원칙에 위배되지 않는지 철저히 사전 검증
+	- 분해된 단위가 'Zero PII' 및 'Legal Compliance' 원칙에 위배되지 않는지 철저히 사전 검증
 2. Logic Design & Draft
 	- Stateless, 비동기, 다중 아키텍처 호환, 비용 효율화 지침을 준수하는 엔지니어링 해결책 초안 설계
 
