@@ -1,0 +1,16 @@
+implementation_plan의 내용 중 일부 수정을 요청한다.
+
+우선 'Open Questions'에 대해 답하겠다.
+1. Frontend framework version
+	- 질문의 의도를 모르겠다. 내용을 설명해라.
+2. Storage location
+	- 스크랩한 마크다운 파일 생성은 테스트용으로 시도하는 작업이다.
+	- 현재 로컬에서만 동작해도 됨을 인지하고 별도의 저장 공간을 생성해라.
+3. Keyword matching
+	- 정확히 일치가 아닌 부분 일치 방식으로 구현해라.
+4. Dynamic pages
+	- 질문의 의도를 정확히 이해하지 못했다. Playwright를 사용하는 방향으로 작업을 진행하고 정적 HTML과의 차이를 명시해라.
+
+'Proposed Changes'에 명시된 내용중 일부 수정을 원한다.
+1. Implements `count_keywords(md_path: Path, keywords: List[str]) -> dict` (case‑insensitive for English, exact for others).
+	- 한국어 외의 모든 언어는 대소 구분 없이 부분 일치하면 키워드가 포함된 걸고 구현해라.

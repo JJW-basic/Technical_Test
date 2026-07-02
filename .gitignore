@@ -93,5 +93,5 @@ tmp/
 # 8. My Code
 # ==========================================
 # 내 개인 파일
-question_prompt/
-vibe_prompt_log/
+#question_prompt/
+#vibe_prompt_log/

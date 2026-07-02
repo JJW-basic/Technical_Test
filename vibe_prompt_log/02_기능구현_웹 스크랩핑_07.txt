@@ -1,0 +1,7 @@
+Taskiq 워커(Worker)가 반복적으로 재시작되는 'Crash Loop' 현상의 원인을 파악했으면
+문제를 를 해결해라.
+
+문제를 해결하고나서 'vibe_log.md'에 이력을 납길 때 아래의 내용도 남겨야 한다.
+1. GPT-OSS 120B (Medium) 모델을 사용해서 문제 발생의 원인 분석과 해결 방안 제안을 요청했다.
+2. GPT-OSS 120B (Medium) 모델은 내가 프롬프트에 요청한 내용은 성실히 수행했다.
+3. GPT-OSS 120B (Medium) 모델은 '01-system-rules.md'에 명시한 내용은 수행하지 않았다. (ex. 'vibe_log.md' 업데이트를 하지 않음)
