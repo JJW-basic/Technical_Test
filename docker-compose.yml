@@ -26,28 +26,37 @@ services:
       context: ./backend
     volumes:
       - ./backend:/app
+      - ./scraped_data:/app/scraped_data
     environment:
       - REDIS_URL=redis://redis:6379/0
     depends_on:
-      - redis
+      redis:
+        condition: service_healthy
     networks:
       - app-network
 
   worker:
     build:
       context: ./backend
-    command: taskiq worker app.tasks:broker app.main
+    command: taskiq worker app.tasks:broker
     volumes:
       - ./backend:/app
+      - ./scraped_data:/app/scraped_data
     environment:
       - REDIS_URL=redis://redis:6379/0
     depends_on:
-      - redis
+      redis:
+        condition: service_healthy
     networks:
       - app-network
 
   redis:
     image: redis:7-alpine
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 2s
+      timeout: 1s
+      retries: 5
     networks:
       - app-network
 
